@@ -213,3 +213,7 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+*.sln
+*.vcxproj
+*.filters
+Project2/Project2/Source.cpp

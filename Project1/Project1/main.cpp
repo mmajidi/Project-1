@@ -51,6 +51,10 @@ int main()
 
     PROCESSENTRY32 pe;
 
+	/*char buffer;*/
+	DWORD dwWritten; // number of bytes written to file
+	HANDLE hFile;  //for Writefile func
+
 
 	int pid;
     HANDLE processHandle;
@@ -134,7 +138,16 @@ int main()
 
          if (Module32First(hMod, &me))
 
-			 printf("%6d %-15s %s %6d %.*S\n",pe.th32ProcessID,me.szModule,me.szExePath, pe.th32ParentProcessID, commandLine.Length / 2, commandLineContents);
+
+			 hFile=CreateFile(TEXT("C:\\test.txt"),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,0);
+			
+		 char buffer[]="Write this text to file"; 
+
+
+		 WriteFile(hFile,buffer,sizeof(buffer),&dwWritten,0);
+
+		
+		 printf("%6d %-15s %s %6d %.*S\n",pe.th32ProcessID,me.szModule,me.szExePath, pe.th32ParentProcessID, commandLine.Length / 2, commandLineContents);
 
 		 CloseHandle(processHandle);
 		 free(commandLineContents);
