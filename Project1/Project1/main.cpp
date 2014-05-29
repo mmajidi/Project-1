@@ -3,7 +3,6 @@
 #include <windows.h>
 #include <tlhelp32.h>
 
-// test1
 
 typedef NTSTATUS (NTAPI *_NtQueryInformationProcess)(
     HANDLE ProcessHandle,
@@ -45,14 +44,6 @@ PVOID GetPebAddress(HANDLE ProcessHandle)
 
 
 
-
-
-//test1
-
-
-
-
-
 int main() 
 {
 
@@ -60,7 +51,6 @@ int main()
 
     PROCESSENTRY32 pe;
 
-	//test2
 
 	int pid;
     HANDLE processHandle;
@@ -69,7 +59,6 @@ int main()
     UNICODE_STRING commandLine;
     WCHAR *commandLineContents;
 
-	//test2
 
     hSnap=CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS,0);
 
@@ -100,6 +89,7 @@ int main()
           if (hMod==INVALID_HANDLE_VALUE) 
 
      continue;
+
 
 		  if ((processHandle = OpenProcess(
         PROCESS_QUERY_INFORMATION | /* required for NtQueryInformationProcess */
