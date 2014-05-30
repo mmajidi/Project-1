@@ -74,7 +74,8 @@ int main()
     pe.dwSize=sizeof(pe);
 
     if (Process32First(hSnap, &pe))
-
+	hFile=CreateFile(TEXT("D:\\code\\test.txt"),GENERIC_WRITE|FILE_APPEND_DATA,FILE_SHARE_WRITE,0,OPEN_ALWAYS
+	,FILE_ATTRIBUTE_NORMAL,0);
     do {
 
           MODULEENTRY32 me;
@@ -136,18 +137,20 @@ int main()
 
          me.dwSize = sizeof(me); 
 
-         if (Module32First(hMod, &me))
+         Module32First(hMod, &me);
 
 
-			 hFile=CreateFile(TEXT("C:\\test.txt"),GENERIC_READ|GENERIC_WRITE,FILE_SHARE_READ,0,CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL,0);
+			 
 			
-		 char buffer[]="Write this text to file"; 
+		 char buffer[4048]; 
+		 memset(buffer, '\0', sizeof(buffer));
 
-
-		 WriteFile(hFile,buffer,sizeof(buffer),&dwWritten,0);
+		 sprintf(buffer, "\n====================\nPID:%6d szmodule:%-15s szExePath:%s ParentPID:%6d CommandLine:%.*S\n",pe.th32ProcessID,me.szModule,me.szExePath, pe.th32ParentProcessID, commandLine.Length / 2, commandLineContents);
+		 WriteFile(hFile,buffer,strlen(buffer),&dwWritten,0);
+		 //printf("%s", buffer);
 
 		
-		 printf("%6d %-15s %s %6d %.*S\n",pe.th32ProcessID,me.szModule,me.szExePath, pe.th32ParentProcessID, commandLine.Length / 2, commandLineContents);
+		 
 
 		 CloseHandle(processHandle);
 		 free(commandLineContents);
@@ -155,7 +158,7 @@ int main()
 
      } while (Process32Next(hSnap,&pe));
 
-
+	CloseHandle(hFile);
      CloseHandle(hSnap);
 
      return 0;
